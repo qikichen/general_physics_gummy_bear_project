@@ -43,7 +43,7 @@ def momentum(mass, velocity):
     momentum = mass * velocity
     return momentum
 
-def rate_of_change_momentum(momentum_initial, momentum_final_, time):
+def rate_of_change_momentum(momentum_initial, momentum_final, time):
     """
     Rate of change of momentum used to calculate the fall 
 
@@ -71,7 +71,7 @@ def height_of_gummy_bear_molten(vol):
     Returns the height of the molten gummy bear in the cylinder
     """
     
-    height = volume/(np.pi*CYLINDER_RADIUS**2)
+    height = vol/(np.pi*CYLINDER_RADIUS**2)
     return height    
 
 def deceleration():
