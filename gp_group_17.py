@@ -72,7 +72,6 @@ def height_of_gummy_bear_molten(vol):
     """
     Returns the height of the molten gummy bear in the cylinder
     """
-    
     height = vol/(np.pi*CYLINDER_RADIUS**2)
     return height    
 
@@ -95,7 +94,7 @@ def height_deformation():
     """
     return 0
 
-def plotting_3d(X,Y,Z):
+def plotting_3d(X,Y,Z): #MIKOLAJ DO THIS [Fix this for me please]
 
     fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
     # Plot the surface.
@@ -111,8 +110,13 @@ def plotting_3d(X,Y,Z):
 
     plt.show()
 
-    return 0
-    
+def plotting_2d(X,Y): # MIKOLAJ DO THIS
+
+    plt.figure()
+    plt.subplots(211)
+    plt.plot(X,Y)
+    plt.grid(True)
+    plt.show()
 
 def _main_():
     initial_gummy_bear_number = 100 #Number of Gummy Bears
