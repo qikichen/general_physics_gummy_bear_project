@@ -74,11 +74,44 @@ def height_of_gummy_bear_molten(vol):
     height = volume/(np.pi*CYLINDER_RADIUS**2)
     return height    
 
+def deceleration():
+    """
+    Calculates deceleration [INCOMPLETE]
+    """
+    return 0 
+
+def new_velocity(init_velocity, deceleration, time_span):
+    """
+    Calculates new velocity after each time frame
+    """
+    new_velocity = init_velocity + deceleration*time_span
+    return new_velocity
+    
+
 def _main_():
+    #Initial Parameters
     initial_gummy_bear_number = 100
+    time = 0
     fall_height = HEIGHT-height_of_gummy_bear_molten(
         cylinder_volume(initial_gummy_bear_number))
     initial_momentum = energy_to_velocity(fall_height)*BODY_MASS
+    
+    #Momenta after contact
+    momenta_after_contact = np.array([])
+    velocity_after_contact = np.array([])
+    
+    #Algorithm
+    boolean_femur_break = False
+    while(boolean_femur_break == False):
+        decelaration_mass = deceleration() # Remember to input something
+        
+    
+    
+    
+    
+    #momentum final iteratively calcualted 
+    #initial momentum calculated just before impact
+    #rate of change of momentum calculated
     
     
     
