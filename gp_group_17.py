@@ -36,11 +36,11 @@ BODY_MASS = 70 #kg
 #HUMAN BODY PARAMETERS
 FEMUR_BREAKGE = 3053 #Newton FROM A PAPER
 
-def momentum(mass, velocity):
+def momentum(velocity):
     """
     momentum calculations
     """
-    momentum = mass * velocity
+    momentum = BODY_MASS * velocity
     return momentum
 
 def rate_of_change_momentum(momentum_initial, momentum_final, time):
@@ -89,22 +89,35 @@ def new_velocity(init_velocity, deceleration, time_span):
     
 
 def _main_():
-    #Initial Parameters
-    initial_gummy_bear_number = 100
-    time = 0
+    initial_gummy_bear_number = 100 #Number of Gummy Bears
+    
     fall_height = HEIGHT-height_of_gummy_bear_molten(
         cylinder_volume(initial_gummy_bear_number))
-    initial_momentum = energy_to_velocity(fall_height)*BODY_MASS
+    initial_velocity= energy_to_velocity(fall_height)
+    initial_momentum = momentum(initial_velocity)
     
     #Momenta after contact
-    momenta_after_contact = np.array([])
-    velocity_after_contact = np.array([])
+    momenta_array = np.array([])
+    velocity_array = np.array([])
+    np.insert(momenta_array, initial_momentum)
+    np.insert(velocity_array, initial_velocity)
+
     
-    #Algorithm
+    #Algorithm : Numerical Iterative Method
     boolean_femur_break = False
     while(boolean_femur_break == False):
+        time = 0 # Initial Parameter for time
         decelaration_mass = deceleration() # Remember to input something
-        
+
+        #Temporary variables added to the arrays
+        temp_velocity = new_velocity(decelaration_mass)
+        temp_momentum = momentum(temp_velocity)
+        np.insert(velocity_array, temp_velocity)
+        np.insert(momenta_array, temp_momentum)
+
+        #
+
+
     
     
     
