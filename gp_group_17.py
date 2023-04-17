@@ -5,19 +5,36 @@ General Physics Project:
     
     Use an iterative method to find a suitable number of gummy bears at which
     a person will survive a fall from a given height
+    
+    Assumptions made:
+        Air resistance = 0 [INITIALLY]
+        During impact, no air will replace the dent created by the fall
+        Assume a cylindrical container in which the gummy bears are filled
+        Gummy bears are fully molten, no air in between the gummy bears
+        Person falling is cuboid
 
 - Qi Nohr Chen (12.04.2023)
 """
 import numpy as np
 import matplotlib as plt
 
-HEIGHT = 100 #meters
-DENSITY_GUMMY_BEAR = 507.21 #kg/m^3
+#STANDARD PHYSICAL CONSTANTS
 GRAVITY = 9.8 #meter per second square
-FEMUR_BREAKGE = 3053 #Newton FROM A PAPER
+
+#ENVIRONMENT PARAMETER
+HEIGHT = 100 #meters
 CYLINDER_RADIUS = 2.5 #Meters
+
+#GUMMYBEAR PARAMETERS
+DENSITY_GUMMY_BEAR = 507.21 #kg/m^3
 ELASTIC_MODULUS_GUMMY_BEAR = 0.07 #Mega PAscla
+
+#MASS PARAMETERS
 GUMMYBEAR_MASS = 0.0029396 #kg
+BODY_MASS = 70 #kg
+
+#HUMAN BODY PARAMETERS
+FEMUR_BREAKGE = 3053 #Newton FROM A PAPER
 
 def momentum(mass, velocity):
     """
@@ -34,12 +51,12 @@ def rate_of_change_momentum(momentum_initial, momentum_final_, time):
     rom = (momentum_final-momentum_initial)/time # Time of contact
     return rom
 
-def energy_to_velocity():
+def energy_to_velocity(new_height):
     """
     uses conservation of energy to calculate the veloctiy (THIS IGNORES AIR 
     RESISTANCE)
     """
-    velocity = np.sqrt(2*GRAVITY*HEIGHT)
+    velocity = np.sqrt(2*GRAVITY*new_height)
     return velocity
 
 def cylinder_volume(number_of_gummy):
@@ -55,17 +72,15 @@ def height_of_gummy_bear_molten(vol):
     """
     
     height = volume/(np.pi*CYLINDER_RADIUS**2)
-    return height
-
-
-    
+    return height    
 
 def _main_():
-    #momentum final iteratively calcualted 
-    #initial momentum calculated just before impact
-    #rate of change of momentum calculated
+    initial_gummy_bear_number = 100
+    fall_height = HEIGHT-height_of_gummy_bear_molten(
+        cylinder_volume(initial_gummy_bear_number))
+    initial_momentum = energy_to_velocity(fall_height)*BODY_MASS
     
-    #SEE IF GITHUB WORKS
+    
     
     
 
