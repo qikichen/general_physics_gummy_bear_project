@@ -10,8 +10,9 @@ General Physics Project:
         Air resistance = 0 [INITIALLY]
         During impact, no air will replace the dent created by the fall
         Assume a cylindrical container in which the gummy bears are filled
-        Gummy bears are fully molten, no air in between the gummy bears
+        Gummy bears are fully molten and resolidified, no air in between the gummy bears
         Person falling is cuboid
+        Specified Cylinder radius
 
 - Qi Nohr/Mikolaj/Leonor/Hamza/Nick (12.04.2023)
 """
@@ -37,6 +38,11 @@ BODY_MASS = 70 #kg
 
 #HUMAN BODY PARAMETERS
 FEMUR_BREAKGE = 3053 #Newton FROM A PAPER
+
+#EXTENSION PARAMATERS
+DRAG_COEFFICIENT = 0 #dimensionless
+FLUID_DENSITY = 1.2 #kg.m^-3 for air
+
 
 def momentum(velocity):
     """
@@ -118,7 +124,19 @@ def plotting_2d(X,Y): # MIKOLAJ DO THIS
     plt.grid(True)
     plt.show()
 
-def _main_():
+#PHYSICS EXTENSIONS TO THIS PROBLEM
+
+def drag_force(frontal_area, flow_velocity):
+    """
+    Calculates the drag force of a body falling through any medium (constant parameters are given above)
+    """
+    f_d = 1/2 * DRAG_COEFFICIENT * frontal_area* flow_velocity**2 *FLUID_DENSITY
+
+    return f_d
+
+#ALGORITHMS
+
+def momentum_algorithm():
     initial_gummy_bear_number = 100 #Number of Gummy Bears
     time = 0
     
@@ -154,15 +172,32 @@ def _main_():
         temp_momentum_rate = rate_of_change_momentum(momenta_array[0], momenta_array[-1], time)
         np.insert(force_array, temp_momentum_rate)
 
-        if(height_deformation >= gummy_height or temp_momentum*-1 >= FEMUR_BREAKGE ):
+        if(height_deformation >= gummy_height or temp_momentum*-1 >= FEMUR_BREAKGE ): # I AM REALLY UNSURE ABOUT THIS - QIKI
             boolean_femur_break = True
+
+    return momenta_array, velocity_array, time_array, force_array
+
+    def minimising_algorithm():
+        """
+        MIKOLAJ and Qiki: Work on deciding how to minimise the number of gummy bears such that we can automate the process!
+        Current ideas:
+            Hill climbing algorithm
+            Derivatives? 
+
+            Current algorithm idea (Hill Climbing inspired):
+                Take the max/min of each force array and hill climb, if it is above the femur breakage, eg: then we need to lessen gummy bears
+        """
+        return 0
         
 
     
     
-    #momentum final iteratively calcualted 
-    #initial momentum calculated just before impact
-    #rate of change of momentum calculated
+    #momentum final iteratively calcualted DONE
+    #initial momentum calculated just before impact DONE
+    #rate of change of momentum calculated DONE
+
+    #TASKS: 
+    #   make an algorithm that decides whether it has reached the minimum number of gummy bears
     
     
     
