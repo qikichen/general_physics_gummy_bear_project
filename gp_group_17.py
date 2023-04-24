@@ -30,7 +30,7 @@ CYLINDER_RADIUS = 2.5 #Meters
 
 #GUMMYBEAR PARAMETERS
 DENSITY_GUMMY_BEAR = 507.21 #kg/m^3
-ELASTIC_MODULUS_GUMMY_BEAR = 0.07 #Mega PAscla
+ELASTIC_MODULUS_GUMMY_BEAR = 0.07 #Mega PAscla YM/ SURFACE AREA IS HOOKE'S LAW
 
 #MASS PARAMETERS
 GUMMYBEAR_MASS = 0.0029396 #kg
@@ -85,7 +85,8 @@ def deceleration():
     """
     Calculates deceleration [INCOMPLETE]
     """
-    return 0 
+
+    return 2 
 
 def new_velocity(init_velocity, deceleration, time_span):
     """
@@ -94,10 +95,11 @@ def new_velocity(init_velocity, deceleration, time_span):
     new_velocity = init_velocity + deceleration*time_span
     return new_velocity
 
-def height_deformation():
+def height_deformation(force, length, area, ym):
     """
     Returns the maximum height of the deformation
     """
+    deformation = (force*length)/(area * ym)
     return 0
 
 def plotting_3d(X,Y,Z): #MIKOLAJ DO THIS [Fix this for me please]
@@ -173,33 +175,37 @@ def momentum_algorithm():
         np.insert(force_array, temp_momentum_rate)
 
         if(height_deformation >= gummy_height or temp_momentum*-1 >= FEMUR_BREAKGE ): # I AM REALLY UNSURE ABOUT THIS - QIKI
+            #THIS ONE SAYS IF THE MAXIMUM GUMMY DEFORMATION IS LESS THAN THE ACTUAL DEFORMED HEIGHT THEN THE FEMUR WILL BREAK
+            boolean_femur_break = True
+
+        if(momenta_array[-1] < momenta_array[-2]):
             boolean_femur_break = True
 
     return momenta_array, velocity_array, time_array, force_array
 
-    def minimising_algorithm():
-        """
-        MIKOLAJ and Qiki: Work on deciding how to minimise the number of gummy bears such that we can automate the process!
-        Current ideas:
-            Hill climbing algorithm
-            Derivatives? 
+def minimising_algorithm():
+    """
+    MIKOLAJ and Qiki: Work on deciding how to minimise the number of gummy bears such that we can automate the process!
+    Current ideas:
+        Hill climbing algorithm
+        Derivatives? 
 
-            Current algorithm idea (Hill Climbing inspired):
-                Take the max/min of each force array and hill climb, if it is above the femur breakage, eg: then we need to lessen gummy bears
-        """
-        return 0
-        
+        Current algorithm idea (Hill Climbing inspired):
+            Take the max/min of each force array and hill climb, if it is above the femur breakage, eg: then we need to lessen gummy bears
+    """
+    return 0
+    
 
-    
-    
-    #momentum final iteratively calcualted DONE
-    #initial momentum calculated just before impact DONE
-    #rate of change of momentum calculated DONE
 
-    #TASKS: 
-    #   make an algorithm that decides whether it has reached the minimum number of gummy bears
-    
-    
-    
-    
+
+#momentum final iteratively calcualted DONE
+#initial momentum calculated just before impact DONE
+#rate of change of momentum calculated DONE
+
+#TASKS: 
+#   make an algorithm that decides whether it has reached the minimum number of gummy bears
+
+
+
+
 
