@@ -26,23 +26,24 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 from matplotlib.ticker import LinearLocator
 
+
 #STANDARD PHYSICAL CONSTANTS
 GRAVITY = 9.8 #meter per second square
 
 #ENVIRONMENT PARAMETER
 HEIGHT = 35 #meters
-CYLINDER_RADIUS = 2.5 #Meters
+CYLINDER_RADIUS = 1.5 #Meters
 
 #GUMMYBEAR PARAMETERS
 DENSITY_GUMMY_BEAR = 507.21 #kg/m^3
-ELASTIC_MODULUS_GUMMY_BEAR = 70000 #Mega PAscla YM/ SURFACE AREA IS HOOKE'S LAW
+ELASTIC_MODULUS_GUMMY_BEAR = 70000 #PAscla YM/ SURFACE AREA IS HOOKE'S LAW
 
 #MASS PARAMETERS
 GUMMYBEAR_MASS = 0.0029396 #kg
 BODY_MASS = 70 #kg
 
 #HUMAN BODY PARAMETERS
-FEMUR_BREAKGE = 4649 #Newton FROM A PAPER
+FEMUR_BREAKGE = 20000 #Newton FROM A PAPER
 
 #EXTENSION PARAMATERS
 DRAG_COEFFICIENT = 1.17 #dimensionless
@@ -129,144 +130,83 @@ def ode_distance_solution(time, gummy_b_height, initial_velocity):
     as the gummy bear submerges, the ode solution will provide the distance it travels
     """
     omega = np.sqrt((np.pi*CYLINDER_RADIUS**2*ELASTIC_MODULUS_GUMMY_BEAR)/(gummy_b_height*BODY_MASS))
-    distance_t = 1/omega*(initial_velocity-GRAVITY/omega)*np.sinh(omega*time) - GRAVITY/omega**2*(np.exp(-omega*time)-1)
+    distance_t = (1/omega)*(initial_velocity-GRAVITY/omega)*np.sinh(omega*time) - (GRAVITY/omega**2)*(np.exp(-omega*time)-1)
     return distance_t
-    
-def plotting_3d(X,Y,Z): #MIKOLAJ DO THIS [Fix this for me please]
 
-    fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
-    # Plot the surface.
-    surf = ax.plot_surface(X, Y, Z, cmap=cm.coolwarm,
-                        linewidth=0, antialiased=False)
-    # Customize the z axis.
-    ax.zaxis.set_major_locator(LinearLocator(10))
-    # A StrMethodFormatter is used automatically
-    ax.zaxis.set_major_formatter('{x:.02f}')
-
-    # Add a color bar which maps values to colors.
-    fig.colorbar(surf, shrink=0.5, aspect=5)
-
-    plt.show()
-
-def plotting_2d(X,Y): # MIKOLAJ DO THIS
-    
-
-    plt.scatter(X,Y)
+def plotting_2d(X,Y): 
+    plt.title("Number of Gummy Bears vs Log(Force)")
+    plt.ylabel("Log(Force)")
+    plt.xlabel("Number of Gummy Bears")
+    plt.axhline(y = np.log(FEMUR_BREAKGE), c="red")
+    plt.scatter(X,Y, c="black")
+    plt.savefig("group_project_plot", DPI = 3000)
     plt.show()
 
 #PHYSICS EXTENSIONS TO THIS PROBLEM
 
-def drag_force(frontal_area, flow_velocity):
-    """
-    Calculates the drag force of a body falling through any medium (constant parameters are given above)
-    """
-    f_d = 1/2 * DRAG_COEFFICIENT * frontal_area* flow_velocity**2 *FLUID_DENSITY
-
-    return f_d
 
 #ALGORITHMS
 
-def momentum_algorithm():
-    initial_gummy_bear_number = 117500000 #Number of Gummy Bears
-    print(max_gummy_bear())
+def momentum_algorithm(initial_gummy_bear_number):
     time = 0
-    if (initial_gummy_bear_number >= max_gummy_bear()):
-        return 0
-    
     gummy_height = height_of_gummy_bear_molten(cylinder_volume(initial_gummy_bear_number))
-    
     fall_height = HEIGHT - gummy_height
-    print("THIS IS FALLHEIGHT")
-    print(fall_height)
     initial_velocity= energy_to_velocity(fall_height)
     initial_momentum = momentum(initial_velocity)
-    print("THE INITIAL MOMENTUM")
-    print(initial_momentum)
-    #Momenta after contact
-    momenta_array = []
-    velocity_array = []
-    time_array = []
-    force_array = []
-    momenta_array.append(initial_momentum)
-    velocity_array.append(initial_velocity)
-    print("MAXIMUM DEFORMATION")
-    print(height_deformation(gummy_height))
-
-    
     #Algorithm : Numerical Iterative Method
     boolean_femur_break = False
     while(boolean_femur_break == False):
-        time += 0.01
+        time += 0.001
          # Initial Parameter for time
         distance = ode_distance_solution(time, gummy_height, initial_velocity)
-        #decelaration_mass = deceleration(distance, gummy_height) # Remember to input something
-
-        # Temporary variables added to the arrays
-        #temp_velocity = new_velocity(initial_velocity,decelaration_mass, time)
-        #temp_momentum = momentum(temp_velocity)
-        #velocity_array.append(temp_velocity)
-        #momenta_array.append(temp_momentum)
-
-        # Calculate Force
-        time_array.append(time)
-        #print(temp_momentum)
-        temp_momentum_rate = rate_of_change_momentum(initial_momentum, momenta_array[-1], time)
-        force_array.append(temp_momentum_rate)
-        
-        # Distance travelled
-        print("Distance Travelled")
-        print(distance)
-
-        if(height_deformation(gummy_height) <= distance): # I AM REALLY UNSURE ABOUT THIS - QIKI
-            #THIS ONE SAYS IF THE MAXIMUM GUMMY DEFORMATION IS LESS THAN THE ACTUAL DEFORMED HEIGHT THEN THE FEMUR WILL BREAK
-            print("THE FORCE IS")
-            print(initial_momentum/time)
-            boolean_femur_break = True
-            
-
-        #if(time >= 0.1):
-            #boolean_femur_break = True
-            
+        if(height_deformation(gummy_height) <= distance): 
+            force = initial_momentum/time
+            return force
      
-         
-        
-            
-        
-        
-
     return 0
 
 def minimising_algorithm():
     """
-    MIKOLAJ and Qiki: Work on deciding how to minimise the number of gummy bears such that we can automate the process!
-    Current ideas:
-        Hill climbing algorithm
-        Derivatives? 
-
-        Current algorithm idea (Hill Climbing inspired):
-            Take the max/min of each force array and hill climb, if it is above the femur breakage, eg: then we need to lessen gummy bears
+    Minimising algorithm
     """
+
+    g_number = 1000
+    gummy_height = height_of_gummy_bear_molten(cylinder_volume(g_number))
+    h_deform = height_deformation(gummy_height)
+    gummy_height = height_of_gummy_bear_molten(cylinder_volume(g_number))
+
+    if (g_number >= max_gummy_bear()):
+        return 0 
+    while (h_deform < gummy_height):
+        g_number += 1000
+
+    force_array = []
+    raw_force_array = []
+    number_array = []
+
+    while (g_number < max_gummy_bear()-100000):
+        raw_force = momentum_algorithm(g_number)
+        force = np.log(raw_force)
+        raw_force_array.append(raw_force)
+        force_array.append(force)
+        number_array.append(g_number)
+        print(force)
+        print(g_number)
+        g_number += 1000
+
+    for i in range(len(raw_force_array)):
+        if(raw_force_array[i] >= FEMUR_BREAKGE-0.2 and raw_force_array[i] <= FEMUR_BREAKGE+0.2):
+            fall = HEIGHT - height_of_gummy_bear_molten(cylinder_volume(number_array[i]))
+            print("THE NUMBER OF GUMMY BEARS TO SURVIVE A FALL:")
+            print(number_array[i])
+            print("THE FALL HEIGHT:")
+            print(fall)
     
+    plotting_2d(number_array, force_array)
+   
     return 0
  
-gummy_height = height_of_gummy_bear_molten(cylinder_volume(10000000))
-#print(gummy_height)
-#print(height_deformation(gummy_height))
-
-momentum_algorithm()
-#plotting_2d(tim_arr, force_arr)
-
-
-
-
-#momentum final iteratively calcualted DONE
-#initial momentum calculated just before impact DONE
-#rate of change of momentum calculated DONE
-
-#TASKS: 
-#   make an algorithm that decides whether it has reached the minimum number of gummy bears
-
-
+minimising_algorithm()
 
 
 
