@@ -136,8 +136,8 @@ def plotting_2d(X,Y):
     plt.title("Number of Gummy Bears vs Log(Force)")
     plt.ylabel("Log(Force)")
     plt.xlabel("Number of Gummy Bears")
-    plt.axhline(y = np.log(FEMUR_BREAKGE), c="red")
-    plt.scatter(X,Y, c="black")
+    plt.axhline(y = np.log(FEMUR_BREAKGE), c="salmon")
+    plt.scatter(X,Y, c="lime")
     plt.savefig("group_project_plot", DPI = 3000)
     plt.show()
 
@@ -191,7 +191,7 @@ def minimising_algorithm():
         number_array.append(g_number)
         print(force)
         print(g_number)
-        g_number += 100
+        g_number += 1000
 
     for i in range(len(raw_force_array)):
         if(raw_force_array[i] >= FEMUR_BREAKGE-0.2 and raw_force_array[i] <= FEMUR_BREAKGE+0.2):
