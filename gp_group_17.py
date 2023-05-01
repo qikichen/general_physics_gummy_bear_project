@@ -7,7 +7,6 @@ General Physics Project:
     a person will survive a fall from a given height
     
     Assumptions made:
-        Air resistance = 0 [Possible extensions that can be made]
         During impact, no air will replace the dent created by the fall
         Assume a cylindrical container in which the gummy bears are filled
         Gummy bears are fully molten and resolidified, no air in between the gummy bears
@@ -192,7 +191,7 @@ def minimising_algorithm():
         number_array.append(g_number)
         print(force)
         print(g_number)
-        g_number += 1000
+        g_number += 100
 
     for i in range(len(raw_force_array)):
         if(raw_force_array[i] >= FEMUR_BREAKGE-0.2 and raw_force_array[i] <= FEMUR_BREAKGE+0.2):
@@ -201,6 +200,11 @@ def minimising_algorithm():
             print(number_array[i])
             print("THE FALL HEIGHT:")
             print(fall)
+            print("NUMBER OF GUMMY BEAR PACKETS")
+            number_packs = (0.0029396*number_array[i])/0.175
+            print(number_packs)
+            print("COST IN POUNDS")
+            print(number_packs* 1.25)
     
     plotting_2d(number_array, force_array)
    
