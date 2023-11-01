@@ -1,5 +1,5 @@
 # general_physics_gummy_bear_project
-General Physics Project:
+## General Physics Project:
     
     Use an iterative method to find a suitable number of gummy bears at which
     a person will survive a fall from a given height
